@@ -1,1 +1,0 @@
-https://stride.jadportfolio.com
