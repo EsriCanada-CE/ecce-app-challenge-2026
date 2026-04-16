@@ -1,0 +1,23 @@
+{
+  "name": "transit_infrastructure",
+  "type": "widget",
+  "version": "1.0.0",
+  "exbVersion": "1.19.0",
+  "author": "Antigravity",
+  "description": "Place transit stops on the map with buffer zones.",
+  "copyright": "",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "properties": {
+    "hasSettingPage": true
+  },
+  "translatedLocales": [
+    "en"
+  ],
+  "dependency": [
+    "jimu-arcgis"
+  ],
+  "defaultSize": {
+    "width": 320,
+    "height": 420
+  }
+}

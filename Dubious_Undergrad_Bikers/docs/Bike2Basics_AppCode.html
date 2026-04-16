@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bike2Basics</title>
+
+  <script type="module" src="https://js.arcgis.com/calcite-components/3.3.3/calcite.esm.js"></script>
+
+  <script src="https://js.arcgis.com/4.34/"></script>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.34/esri/themes/light/main.css" />
+
+  <style>
+    html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
+    calcite-shell-panel { --calcite-shell-panel-width: 450px; }
+
+    #TOBikeDiv {
+      width: 100%;
+      height: calc(100vh - 56px);
+      min-height: 500px;
+      background: #1f1f1f;
+      position: relative;
+    }
+
+    /* Welcome Overlay Styles */
+    #welcomeOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent screen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000; /* Ensures it stays on top of the app */
+    }
+
+    .welcome-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      color: #151515; /* Dark text for white background */
+    }
+
+    .welcome-box h2 { margin-top: 0; color: #007ac2; }
+    .welcome-box p { line-height: 1.5; margin-bottom: 20px; }
+
+    /* Logo Styling - Top Left & Centered */
+    .app-logo {
+        height: 44px;
+        width: 44px;
+        border-radius: 8px;
+        margin-right: 15px; /* Creates spacing from the right wall */
+        object-fit: cover;
+        align-self: center;
+        background-color: #353535;
+    }
+
+    calcite-tab-title {
+      border-radius: 10px;
+      margin: 6px 6px 0 0;
+      padding: 10px 12px;
+      transition: background 120ms ease, color 120ms ease;
+      cursor: pointer;
+    }
+    calcite-tab-title:hover { background: rgba(255,255,255,0.08); }
+    calcite-tab-title[selected] {
+      background: rgba(0, 166, 255, 0.18);
+      outline: 2px solid rgba(0, 166, 255, 0.65);
+    }
+
+    .panel-instructions {
+      padding: 14px 15px 10px 15px;
+      border-bottom: 1px solid #3a3a3a;
+    }
+    .panel-instructions h3 {
+      margin: 0 0 8px 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    /* Updated Instruction Text to Paragraph */
+    .panel-instructions p {
+      margin: 0;
+      color: #cfcfcf;
+      font-size: 0.85rem;
+      line-height: 1.35rem;
+    }
+
+    .context-content { padding: 20px; color: #efefef; line-height: 1.5; }
+    .context-content h2 { color: #00a6ff; margin-top: 0; font-size: 1.2rem; }
+    
+    /* Hide the default collapse arrows on the right panel */
+    #contextShellPanel::part(collapsible-button) { display: none; }
+
+    .hint { font-size: 0.8rem; color: #b8b8b8; margin: 0 0 10px 0; }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0 6px 0;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+    }
+    .meta-row strong { font-size: 0.85rem; color: #eaeaea; }
+    .total-chip {
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .row { display: flex; align-items: center; gap: 10px; }
+    .spacer { height: 10px; }
+
+    #errorBox {
+      display: none;
+      margin: 10px 0 12px 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 80, 80, 0.5);
+      background: rgba(255, 80, 80, 0.12);
+      color: #ffd0d0;
+      font-size: 0.85rem;
+      line-height: 1.25rem;
+    }
+    #errorBox code {
+      color: #ffe3e3;
+      font-size: 0.78rem;
+      word-break: break-word;
+    }
+
+    #toast {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      z-index: 10;
+      display: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(0, 200, 120, 0.18);
+      border: 1px solid rgba(0, 200, 120, 0.5);
+      color: #d9ffe9;
+      font-size: 0.85rem;
+      backdrop-filter: blur(6px);
+    }
+  </style>
+</head>
+
+<body class="calcite-mode-dark">
+
+  <div id="welcomeOverlay">
+    <div class="welcome-box">
+      <h2>Welcome!</h2>
+      <p>Welcome to Bike2Basics, a visualization tool that can be used to display and weigh factors contributing to bike usability across the City of Toronto. There are three navigation tabs, each with their own contributing factors: the Safety Index, the Accessibility Index, and the Combined Index. Feel free to adjust the various factors and take a look at how they impact the cycling experience in the city. For assistance on using the app, click the drop-down item in the top-left corner. Click OK below to access the app.</p>
+      <calcite-button id="closeWelcome" width="full" appearance="solid">OK</calcite-button>
+    </div>
+  </div>
+
+  <calcite-shell>
+    <calcite-navigation slot="header">
+        <calcite-navigation-logo slot="logo" heading="Bike2Basics"></calcite-navigation-logo>
+        <div slot="content-end" style="display: flex; height: 100%;">
+            <img src="Bike2Basics_Logo_Final.png" alt="Logo" class="app-logo" />
+        </div>
+    </calcite-navigation>
+
+    <calcite-shell-panel slot="panel-start" position="start" display-mode="dock">
+      <calcite-panel>
+        <calcite-accordion selection-mode="single">
+          <calcite-accordion-item heading="How to use this app" icon-start="information">
+            <div class="panel-instructions">
+              <p>Importance can be assigned to each factor contributing to the indices by using weights, with 0 having no contribution and 100 being the most important. Adjustments can be made by using the panel below using the sliders, or by entering the values in the nearby box. The weights total must add to 100 to be able to perform calculations and generate the map.</p>
+            </div>
+          </calcite-accordion-item>
+        </calcite-accordion>
+
+        <calcite-tabs layout="center">
+          <calcite-tab-nav slot="title-group" id="tabNav">
+            <calcite-tab-title selected data-map-id="Map1">Safety Index</calcite-tab-title>
+            <calcite-tab-title data-map-id="Map2">Accessibility Index</calcite-tab-title>
+            <calcite-tab-title data-map-id="Map3">Combined Index</calcite-tab-title>
+          </calcite-tab-nav>
+        </calcite-tabs>
+
+        <div id="slider-container" style="padding: 15px; border-top: 1px solid #3a3a3a;">
+          <div id="errorBox"></div>
+        </div>
+      </calcite-panel>
+    </calcite-shell-panel>
+
+    <calcite-shell-panel slot="panel-end" position="end" id="contextShellPanel" display-mode="float" collapsed>
+      <calcite-action-bar slot="action-bar">
+        <calcite-action text="Information" icon="information" id="infoAction"></calcite-action>
+      </calcite-action-bar>
+      <calcite-panel heading="Index Context">
+          <div class="context-content" id="contextBody">
+              </div>
+      </calcite-panel>
+    </calcite-shell-panel>
+
+    <div id="TOBikeDiv">
+      <div id="toast">Applied ✅</div>
+    </div>
+  </calcite-shell>
+
+  <script>
+    // Toggle Right Panel
+    const contextPanel = document.getElementById("contextShellPanel");
+    document.getElementById("infoAction").onclick = () => {
+        contextPanel.collapsed = !contextPanel.collapsed;
+    };
+
+    // Logic to hide the welcome screen
+    document.getElementById("closeWelcome").onclick = () => {
+      document.getElementById("welcomeOverlay").style.display = "none";
+    };
+
+    require([
+      "esri/config",
+      "esri/WebMap",
+      "esri/views/MapView",
+      "esri/widgets/Legend"
+    ], function (esriConfig, WebMap, MapView, Legend) {
+
+      esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurCrnTmCcEzymprsEAKeawfGPS0RFfE0kmgrw9WWr-y_WZwcGHDTuNfCaNhRm-wNO6uSnNnZ3zn-z19shHJ0kc0b6oAkyBWLGBfDXN4rTrDugcKXMBglAKcEDeqefL5-_lAy2OQlChYA6ZQr_jHBTJHtmTZVKbEue8C7Y3C3hELlLYPONv_z4YxHJOy_3-wEZEOl6awU7HrPRO1ToVJ7aq7-k24oqwTlRo23BLLvV_WILAT1_pyDNUT9t";
+    
+        // Global variables to contain user inputted weights
+        let persistentWeights = {
+            "Map1": null,
+            "Map2": null,
+            "Map3": null
+        };
+
+      const mapInventory = {
+        Map1: {
+          id: "a1a2aeb1562f478c816f3a440e0d2812",
+          title: "Safety Index",
+          context: "<h2>Safety Index</h2><p>The Safety Index is a combination of a streetlight density index, a bike theft occurrence density index, a bike collisions occurrence index, and a level of traffic stress (LTS) index. The first three indices within the safety index are calculated using point density. The level of traffic stress index is outlined on our analysis notebook and our ArcGIS Hub Site.</p>",
+          factors: [
+            { field: "BkColIdxMn", label: "Bike Collisions" },
+            { field: "BkThfIdxMn", label: "Bike Theft" },
+            { field: "StLtIdxMn", label: "Streetlights" },
+            { field: "BkSafIdxMn", label: "Level of Traffic Stress (LTS)" }
+          ]
+        },
+        Map2: {
+          id: "a1a2aeb1562f478c816f3a440e0d2812",
+          title: "Accessibility Index",
+          context: "<h2>Accessibility Index</h2><p>The Accessibility Index is a combination of bike parking density index using bike rack data, a bikeshare station density index, and a level of traffic stress (LTS) index. The first two indices within the accessibility index are calculated using point density. The LTS index is outlined on our analysis notebook and our ArcGIS Hub Site.</p>",
+          factors: [
+            { field: "BkShrIdxMn", label: "Bikeshare Stations" },
+            { field: "BkPrkIdxMn", label: "Bike Parking" },
+            { field: "BkSafIdxMn", label: "Level of Traffic Stress (LTS)" }
+          ]
+        },
+        Map3: {
+          id: "a1a2aeb1562f478c816f3a440e0d2812",
+          title: "Combined Index",
+          context: "<h2>Combined Index</h2><p>The Combined Index combines the previously calculated Safety and Accessibility Indices with a travel time index to show (on balance) the usability of sections of road to bike on within the City of Toronto, with 1 indicating the most usable and bike-friendly and 5 being the most hostile to bikers.</p>",
+          factors: [
+            { key: "Safety", label: "Safety Index (uses your Safety tab weights)" },
+            { key: "Access", label: "Accessibility Index (uses your Accessibility tab weights)" },
+            { key: "Speed",  label: "Travel Time (Speed)" }
+          ]
+        }
+      };
+
+      const sliderContainer = document.getElementById("slider-container");
+      const errorBox = document.getElementById("errorBox");
+      const toast = document.getElementById("toast");
+      const contextBody = document.getElementById("contextBody");
+
+      function updateContext(mapIdKey) {
+          contextBody.innerHTML = mapInventory[mapIdKey].context;
+      }
+
+      function toastShow() {
+        toast.style.display = "block";
+        clearTimeout(window.__toastTimer);
+        window.__toastTimer = setTimeout(() => toast.style.display = "none", 1100);
+      }
+
+      function showError(title, detail) {
+        console.error(title, detail);
+        errorBox.style.display = "block";
+        errorBox.innerHTML = `<b>${title}</b><br/><code>${String(detail)}</code>`;
+      }
+
+      function clearError() {
+        errorBox.style.display = "none";
+        errorBox.innerHTML = "";
+      }
+
+      // ✅ NEW: store the last-calculated Safety + Accessibility expressions
+      const storedIndex = {
+        safetyExpr: null,
+        accessExpr: null
+      };
+
+      let activeMapId = "Map1";
+      let webmap = new WebMap({ portalItem: { id: mapInventory[activeMapId].id } });
+
+      const view = new MapView({
+        container: "TOBikeDiv",
+        map: webmap
+      });
+
+      const legend = new Legend({ view });
+      view.ui.add(legend, "bottom-right");
+
+      function getPolylineFeatureLayer() {
+        const all = view.map?.allLayers;
+        if (!all) return null;
+
+        const candidates = all.toArray().filter(l =>
+          l.type === "feature" &&
+          (l.geometryType === "polyline" || l.geometryType === "line")
+        );
+        return candidates[0] || null;
+      }
+
+      async function zoomToLayer(layer) {
+        try {
+          const ext = await layer.queryExtent();
+          if (ext && ext.extent) await view.goTo(ext.extent.expand(1.08));
+        } catch (e) {
+          console.warn("Could not zoom to layer:", e);
+        }
+      }
+
+      async function ensureLayerReady() {
+        await view.when();
+        await view.map.when();
+
+        const layer = getPolylineFeatureLayer();
+        if(!layer) return null;
+
+        layer.visible = true;
+        await layer.load();
+        await zoomToLayer(layer);
+        clearError();
+        return layer;
+      }
+
+      function fieldExists(layer, fieldName) {
+        return layer.fields?.some(f => f.name === fieldName);
+      }
+
+      function clampInt(v, min, max) {
+        const n = Number.parseInt(v, 10);
+        if (Number.isNaN(n)) return min;
+        return Math.max(min, Math.min(max, n));
+      }
+
+      function sumValues(sliderLocation) {
+        const sliders = sliderLocation.querySelectorAll("calcite-slider");
+        let sum = 0;
+        sliders.forEach(s => sum += Number(s.value || 0));
+        return sum;
+      }
+
+      function updateTotalUI(sliderLocation, totalChip, calcBtn, notice) {
+        const total = sumValues(sliderLocation);
+        totalChip.textContent = `${total} / 100`;
+
+        const ok = (total === 100);
+        totalChip.style.background = ok ? "rgba(0, 200, 120, 0.18)" : "rgba(255, 80, 80, 0.18)";
+        totalChip.style.borderColor = ok ? "rgba(0, 200, 120, 0.5)" : "rgba(255, 80, 80, 0.5)";
+        calcBtn.disabled = !ok;
+        notice.open = !ok;
+      }
+
+      function buildControls(mapIdKey) {
+        const current = mapInventory[mapIdKey];
+        sliderContainer.innerHTML = "";
+        sliderContainer.appendChild(errorBox);
+        updateContext(mapIdKey);
+
+        const notice = document.createElement("calcite-notice");
+        notice.kind = "danger";
+        notice.icon = "exclamation-mark-triangle";
+        notice.open = false;
+        notice.style.marginBottom = "10px";
+        notice.innerHTML = `
+          <div slot="title">Weights must total 100</div>
+          <div slot="message">Keep adjusting until the total equals exactly 100.</div>
+        `;
+        sliderContainer.appendChild(notice);
+
+        const meta = document.createElement("div");
+        meta.className = "meta-row";
+        meta.innerHTML = `<strong>Total weight</strong>`;
+        const totalChip = document.createElement("span");
+        totalChip.className = "total-chip";
+        totalChip.textContent = "0 / 100";
+        meta.appendChild(totalChip);
+        sliderContainer.appendChild(meta);
+
+        // 2. Initialize weights if they don't exist yet (equal split)
+        if (!persistentWeights[mapIdKey]) {
+            persistentWeights[mapIdKey] = {};
+            const defaultVal = Math.floor(100 / current.factors.length);
+            current.factors.forEach((f, idx) => {
+                persistentWeights[mapIdKey][idx] = defaultVal;
+            });
+        }
+
+        const weightsToUse = persistentWeights[mapIdKey];
+
+        const calcBtn = document.createElement("calcite-button");
+        calcBtn.innerText = "Calculate";
+        calcBtn.width = "full";
+        calcBtn.style.marginTop = "10px";
+        calcBtn.disabled = true;
+
+        current.factors.forEach((factor, index) => {
+          const row = document.createElement("div");
+          row.className = "row";
+
+          const label = document.createElement("calcite-label");
+          label.layout = "inline-space-between";
+          label.style.flex = "1";
+          label.innerText = factor.label;
+
+          const savedVal = weightsToUse[index];
+
+          const input = document.createElement("calcite-input");
+          input.type = "number";
+          input.min = "0";
+          input.max = "100";
+          input.step = "1";
+          input.value = String(savedVal);
+          input.style.width = "86px";
+
+          const slider = document.createElement("calcite-slider");
+          slider.min = 0;
+          slider.max = 100;
+          slider.value = savedVal;
+          slider.ticks = 25;
+
+          // Bidirectional Sync Restored
+          const sync = (val) => {
+            const v = clampInt(val, 0, 100);
+            slider.value = v;
+            input.value = String(v);
+            // Saves the user's assigned individual weights so they can go back and adjust them
+            persistentWeights[mapIdKey][index] = v;
+            updateTotalUI(sliderContainer, totalChip, calcBtn, notice);
+          };
+
+          slider.addEventListener("calciteSliderInput", (e) => sync(e.target.value));
+          input.addEventListener("calciteInputInput", (e) => sync(e.target.value));
+
+          row.appendChild(label);
+          row.appendChild(input);
+          sliderContainer.appendChild(row);
+          sliderContainer.appendChild(slider);
+
+          const spacer = document.createElement("div");
+          spacer.className = "spacer";
+          sliderContainer.appendChild(spacer);
+        });
+
+        calcBtn.onclick = () => handleCalculation(mapIdKey);
+        sliderContainer.appendChild(calcBtn);
+
+        updateTotalUI(sliderContainer, totalChip, calcBtn, notice);
+      }
+
+      // ✅ NEW: build Safety / Accessibility expressions from the weights the user set
+      function buildSafetyExpr(weights) {
+        return [
+          `($feature.BkColIdxMn * ${weights[0]})`,
+          `($feature.BkThfIdxMn * ${weights[1]})`,
+          `($feature.StLtIdxMn * ${weights[2]})`,
+          `($feature.BkSafIdxMn * ${weights[3]})`
+        ].join(" + ");
+      }
+
+      function buildAccessExpr(weights) {
+        return [
+          `($feature.BkShrIdxMn * ${weights[0]})`,
+          `($feature.BkPrkIdxMn * ${weights[1]})`,
+          `($feature.BkSafIdxMn * ${weights[2]})`
+        ].join(" + ");
+      }
+
+      // ✅ Combined uses stored expressions (from your previous Calculate actions)
+      function buildCombinedExpr(weightsCombined) {
+        const wSafety = weightsCombined[0];
+        const wAccess = weightsCombined[1];
+        const wSpeed  = weightsCombined[2];
+
+        // Fallbacks if user hasn’t calculated those tabs yet
+        const fallbackSafety = buildSafetyExpr([0.25, 0.25, 0.25, 0.25]);
+        const fallbackAccess = buildAccessExpr([0.3333333, 0.3333333, 0.3333333]);
+
+        const safetySub = storedIndex.safetyExpr ? `(${storedIndex.safetyExpr})` : `(${fallbackSafety})`;
+        const accessSub = storedIndex.accessExpr ? `(${storedIndex.accessExpr})` : `(${fallbackAccess})`;
+
+        const speedField = `($feature.TvlTmIdxMn)`;
+
+        return `( ${safetySub} * ${wSafety} ) + ( ${accessSub} * ${wAccess} ) + ( ${speedField} * ${wSpeed} )`;
+      }
+
+      function applyRenderer(layer, expression) {
+        layer.renderer = {
+          type: "simple",
+          symbol: { type: "simple-line", width: "3.5px" },
+          visualVariables: [{
+            type: "color",
+            valueExpression: expression,
+            stops: [
+              { value: 1, color: "#228B22", label: "Highest Usability - 1" },
+              { value: 3, color: "#FFE700", label: "Moderate Usability - 3" },
+              { value: 5, color: "#FF0000", label: "Lowest Usability - 5" }
+            ]
+          }]
+        };
+        layer.refresh();
+      }
+
+      async function handleCalculation(mapIdKey) {
+        const total = sumValues(sliderContainer);
+        if (total !== 100) return;
+
+        const layer = await ensureLayerReady();
+        if (!layer) return;
+
+        const sliders = sliderContainer.querySelectorAll("calcite-slider");
+        const weights = Array.from(sliders).map(s => Number(s.value) / 100);
+
+        let expr = "";
+
+        if (mapIdKey === "Map1") {
+          expr = buildSafetyExpr(weights);
+          storedIndex.safetyExpr = expr; // ✅ STORE for Combined
+        } else if (mapIdKey === "Map2") {
+          expr = buildAccessExpr(weights);
+          storedIndex.accessExpr = expr; // ✅ STORE for Combined
+        } else {
+          expr = buildCombinedExpr(weights); // ✅ USE stored Safety + Access expressions
+        }
+
+        applyRenderer(layer, expr);
+        toastShow();
+      }
+
+      function setSelectedTab(mapIdKey) {
+        const tabs = document.querySelectorAll("calcite-tab-title");
+        tabs.forEach(t => t.removeAttribute("selected"));
+        const target = Array.from(tabs).find(t => t.getAttribute("data-map-id") === mapIdKey);
+        if (target) target.setAttribute("selected", "");
+      }
+
+      async function loadTab(mapIdKey) {
+        activeMapId = mapIdKey;
+        setSelectedTab(mapIdKey);
+        buildControls(mapIdKey);
+
+        webmap = new WebMap({ portalItem: { id: mapInventory[mapIdKey].id } });
+        view.map = webmap;
+
+        try {
+          await webmap.load();
+          await ensureLayerReady();
+          view.resize();
+        } catch (e) {
+        }
+      }
+
+      document.querySelectorAll("calcite-tab-title").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const id = tab.getAttribute("data-map-id");
+          if (id) loadTab(id);
+        });
+      });
+
+      view.when(async () => {
+        buildControls("Map1");
+        await ensureLayerReady();
+      });
+
+    });
+  </script>
+</body>
+</html>

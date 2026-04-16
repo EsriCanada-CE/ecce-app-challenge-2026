@@ -1,0 +1,20 @@
+{
+  "name": "transit_results",
+  "type": "widget",
+  "version": "1.0.0",
+  "exbVersion": "1.19.0",
+  "author": "Antigravity",
+  "description": "Displays before/after transit desert analysis results.",
+  "copyright": "",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "properties": {
+    "hasSettingPage": false
+  },
+  "translatedLocales": [
+    "en"
+  ],
+  "defaultSize": {
+    "width": 380,
+    "height": 560
+  }
+}

@@ -1,0 +1,12 @@
+System.register(["jimu-core","jimu-ui","jimu-layouts/layout-runtime"],(function(e,t){var o={},r={},i={};return{setters:[function(e){o.React=e.React,o.css=e.css,o.jsx=e.jsx},function(e){r.WidgetPlaceholder=e.WidgetPlaceholder},function(e){i.FlexRowLayoutViewer=e.FlexRowLayoutViewer}],execute:function(){e((()=>{var e={46747:e=>{e.exports='<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"><path fill="#000" fill-rule="evenodd" d="M18 3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 1H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1m-5.5 10v-3.536H8.707l1.329 1.329a.5.5 0 1 1-.708.707l-2.182-2.182a.5.5 0 0 1 0-.707l2.182-2.182a.5.5 0 1 1 .708.707L8.707 9.464H12.5V6h4v8zM7 7H4v6h3v1H3V6h4z" clip-rule="evenodd"></path></svg>'},79244:e=>{"use strict";e.exports=o},41496:e=>{"use strict";e.exports=i},14321:e=>{"use strict";e.exports=r}},t={};function s(o){var r=t[o];if(void 0!==r)return r.exports;var i=t[o]={exports:{}};return e[o](i,i.exports,s),i.exports}s.d=(e,t)=>{for(var o in t)s.o(t,o)&&!s.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},s.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),s.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},s.p="";var l={};return s.p=window.jimuConfig.baseUrl,(()=>{"use strict";s.r(l),s.d(l,{__set_webpack_public_path__:()=>a,default:()=>n});var e=s(79244),t=s(14321),o=s(41496);const r="Flow Row",i=s(46747);class n extends e.React.PureComponent{getStyle(){return e.css`
+      & > div.flex-row-layout {
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+
+        & > .trail-container {
+          height: 100%;
+          overflow: hidden;
+        }
+      }
+    `}render(){const{layouts:s,id:l,intl:n,builderSupportModules:a}=this.props,u=window.jimuConfig.isInBuilder?a.widgetModules.FlexRowLayoutBuilder:o.FlexRowLayoutViewer;if(null==u)return(0,e.jsx)("div",{style:{display:"flex",justifyContent:"center",alignItems:"center"}},"No layout component!");const d=Object.keys(s)[0];return(0,e.jsx)("div",{className:"widget-flex-row-layout w-100 h-100",css:this.getStyle(),style:{overflow:"auto"}},(0,e.jsx)(u,{layouts:s[d]},(0,e.jsx)(t.WidgetPlaceholder,{icon:i,widgetId:l,style:{border:"none",height:"100%",pointerEvents:"none",position:"absolute"},message:n.formatMessage({id:"_widgetLabel",defaultMessage:r})})))}}function a(e){s.p=e}})(),l})())}}}));

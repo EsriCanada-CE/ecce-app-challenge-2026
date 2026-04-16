@@ -1,0 +1,27 @@
+{
+  "name": "transit_impact",
+  "type": "widget",
+  "version": "1.0.0",
+  "exbVersion": "1.19.0",
+  "author": "Antigravity",
+  "description": "Analyzes transit supply impact on dissemination areas.",
+  "copyright": "",
+  "license": "http://www.apache.org/licenses/LICENSE-2.0",
+  "properties": {
+    "hasSettingPage": true,
+    "canConsumeDataAction": true,
+    "supportedDataSourceTypes": [
+      "FEATURE_LAYER"
+    ]
+  },
+  "translatedLocales": [
+    "en"
+  ],
+  "dependency": [
+    "jimu-arcgis"
+  ],
+  "defaultSize": {
+    "width": 420,
+    "height": 520
+  }
+}
