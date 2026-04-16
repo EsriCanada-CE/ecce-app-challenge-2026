@@ -7,3 +7,4 @@ For 2026, teams participating the challenge were tasked to create an app that ad
 ## App Challenge Results:
 
 Final results are anticipated to be announced in early May 
+ 
