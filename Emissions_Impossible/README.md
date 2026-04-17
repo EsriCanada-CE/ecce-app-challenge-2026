@@ -7,7 +7,7 @@ Visit the app [here.](https://www.arcgis.com/home/item.html?id=d15ffa9ee8b840df8
 + Emily Klaassen
 + Savanna Yan
 + Leo Chaulk  
-<img src="../images/TeamPhoto.jpg" alt="Emissions Impossible Team Photo" style="width:75%; height:auto;">  
+<img src="./images/TeamPhoto.jpg" alt="Emissions Impossible Team Photo" style="width:75%; height:auto;">  
 
 # Mission Statement
 
@@ -52,10 +52,10 @@ ArcGIS Pro was the primary analysis tool to create the necessary data for our Ex
 ### Spatial Data Clean Up
 
 Spatial data on census tracts, street centerlines, existing bus routes and stops, and proposed transit routes and stops were obtained from the Halifax Open Data Portal. The core of the analysis centers around how the new proposed transit route affects commuters and overall emissions. Using the Select tool, the proposed transit route lines and stops were clipped to only account for new bus routes and excluded the ferries. The ferries were excluded as the scope of this analysis centered around public transit by bus.  
-<img src="../images/BRT_Select.jpg" alt="BRT Only" style="width:75%; height:auto;">  
+<img src=".//BRT_Select.jpg" alt="BRT Only" style="width:75%; height:auto;">  
 
 The census tracts were filtered down to only those that intersected a walkshed the city created for the new transit route.  
-<img src="../images/CensusSelection.jpg" alt="Census Tracts After Selection" style="width:75%; height:auto;">  
+<img src="./images/CensusSelection.jpg" alt="Census Tracts After Selection" style="width:75%; height:auto;">  
 
 The existing bus routes and stops were clipped to be within the extent of the study area and merged to the proposed network to create one dataset for transit routes for network analysis. The census tracts do not include the water body that runs through the city. This resulted in the route data having broken vectors on the bridges crossing the water. These bridges were repaired before analysis was done.
 
@@ -63,30 +63,30 @@ The existing bus routes and stops were clipped to be within the extent of the st
 ### Walksheds from Transit Stops 
 
 The existing walksheds from City of Halifax was not used as it contained walksheds from the ferries. Two walksheds were calculated for visualizing the distance in minutes from existing and proposed transit bus stops. Both new walksheds were created using a walking network analysis in ArcGIS Pro with pedestrian accessible streets setting time thresholds of 5 minutes, 10 minutes, and 15 minutes. Overlapping walkshed were set to dissolve to simplify the data.  
-<img src="../images/Walksheds.jpg" alt="Walksheds from Transit Stops" style="width:75%; height:auto;">  
+<img src="./images/Walksheds.jpg" alt="Walksheds from Transit Stops" style="width:75%; height:auto;">  
 
 
 ### Commute Vector Routes from Table
 
 Commuter data was obtained from a CSV dataset in Halifax's open data catalogue derived from census data that listed the origin and destination census tracts. The data was cleaned up to be relevant to the study area, and filtered down to only show the number of commuters whose primary mode of transportation is driving. This data was processed to be a line feature class with a record for each commute route vector between tracts represented in the data.  
-<img src="../images/ComVector.jpg" alt="Commute Vector Routes" style="width:75%; height:auto;">  
+<img src="./images/ComVector.jpg" alt="Commute Vector Routes" style="width:75%; height:auto;">  
 
 
 ### Create a Public Transit Data Model
 
 GTFS files for the exsiting bus networks scheduke was pulled from the City of Halifax's Open Data Portal. The GTFS files for the proposed network was created using a custom script tool. This tool derived information from the city's Rapid Transit Strategy report to create a schedule for the proposed bus network.  
-<img src="../images/GTFSPy.jpg" alt="GTFS Python Script Tool" style="width:75%; height:auto;">  
+<img src="./images/GTFSPy.jpg" alt="GTFS Python Script Tool" style="width:75%; height:auto;">  
 
 The created GTFS file and the exisiting GTFS file from Halifax had a mismatch in the calendar start and end dates, resulting in both files not being used concurrently in the analysis. The start dates of the created GTFS file was adjusted to be within range of the existing GTFS files before the analysis was run.
 
 Both sets of GTFS files along with the merged transit route lines were used to create a network dataset with the Public Transit Data Model tool, utlizing an XML template from the ESRI tutorial[^12]."  
-<img src="../images/TransitNetwork.jpg" alt="Transit Route Network" style="width:75%; height:auto;">  
+<img src="./images/TransitNetwork.jpg" alt="Transit Route Network" style="width:75%; height:auto;">  
 
 
 ### Create a Driving Network
 
 An additional network based on the streets feature class was created for drive times to compare the drive and transit times. This layer was adjusted for commute times with a base ratio of 1.75x the base driving time, derived from a report that quantifies transit congestion[^13].  
-<img src="../images/DrivingNetwork.jpg" alt="Driving Network" style="width:75%; height:auto;">  
+<img src="./images/DrivingNetwork.jpg" alt="Driving Network" style="width:75%; height:auto;">  
 
 ### Analyze Transit Routes
 
@@ -94,34 +94,34 @@ The commute vectors were ran as origin-destination pairs in the Route tool, for 
 The routes from the Network Dataset were exported as a public transit route feature class and intersected with the transit lines to calculate the length of transport on each mode (walk vs. bus). A scale factor of 1.25 was used to account for gaps in the intersect. 
 
 The public transit route was joined to the commute vectors so the attribute table contained a field for transit time and length on each route vector. The driving network was also joined to the commute vectors so data for driving time and length could be pulled into new fields in the attribute table. Three additional fields were created on the commute vectors to indicate whether or not the route was within a 30 minute, 45 minute, or 60 minute transit threshold using a 'Y' or 'N'.  
-<img src="../images/ComVectorTransit.jpg" alt="Commute Vector Routes with Transit Data" style="width:75%; height:auto;">  
+<img src="./images/ComVectorTransit.jpg" alt="Commute Vector Routes with Transit Data" style="width:75%; height:auto;">  
 
 
 ### Calculate Emissions for Proposed Bus Network
 
 The emissions were calculated on distance for the bus routes at a rate of 1.57 kg CO2 per km[^14]. When calculating bus emissions, the rate was divided by 50 as the average transit bus has a capaciity of 50 commuters, and scaled to meters as the length values of the data was in meters. This came out to a rate of 0.00003kg CO2 per m, and was doubled to assume two-way travel.  
-<img src="../images/ComVectorTransitBusEmissions.jpg" alt="Commute Vector Routes Bus Emissions" style="width:75%; height:auto;">  
+<img src="./images/ComVectorTransitBusEmissions.jpg" alt="Commute Vector Routes Bus Emissions" style="width:75%; height:auto;">  
 
 Emissions for driving were determined to be at a rate of 0.248kg of CO2 per km, which represents a standard gas vehicle average[^15]. When calculating drive emissions, the rate was scaled to meters as the length values of the data was in meters. This came out to a rate of 0.000248kg CO2 per m, and was doubled to assume two-way travel.  
-<img src="../images/ComVectorTransitDriveEmissions.jpg" alt="Commute Vector Routes Drive Emissions" style="width:75%; height:auto;">  
+<img src="./images/ComVectorTransitDriveEmissions.jpg" alt="Commute Vector Routes Drive Emissions" style="width:75%; height:auto;">  
 
 ### Summarizing the data into Census Tracts
 
 Summary statistics were run on the commute vectors to obtain the sum total of driving emissions for each census tract. Three more summary statistics were conducted grouping census tracts and 30/45/60 minute transit indicators to get total transit emissions and total commuters for each. The four summary statistics tables were joined to the census tract polygons to pull emissions data for driving and the three transit thresholds into the attribute table.
 *Note: that the emissions were not scaled to total population due to inconsistencies with the census data responses and the stated population.*  
-<img src="../images/CensusTractTransit.jpg" alt="Census Tracts with Transit and Emission Data" style="width:75%; height:auto;">  
+<img src="./images/CensusTractTransit.jpg" alt="Census Tracts with Transit and Emission Data" style="width:75%; height:auto;">  
 
 After the data was loaded into ArcGIS Online at a later step, three fields were identified to be missing. These fields are the total remaining drivers for each time threshold. This field assumes all drivers whose routes do fall within the time thresholds choose to take public transit. It was calculated directly in ArcGIS Online using Calculate Field.  
-<img src="../images/AGOCalc.jpg" alt="Calculating Remaining Drivers for Time Thresholds" style="width:75%; height:auto;">  
+<img src="./images/AGOCalc.jpg" alt="Calculating Remaining Drivers for Time Thresholds" style="width:75%; height:auto;">  
 
 
 ### Relating the Data
 
 A one-to-many relationship class was made in ArcGIS pro between the census tracts and the commuter route vectors using the Census Tract ID as the key. This allows for the select of census tracts in the app to display related commute vector records.  
-<img src="../images/RelationshipClass.jpg" alt="Census to Vector Relate" style="width:75%; height:auto;">  
+<img src="./images/RelationshipClass.jpg" alt="Census to Vector Relate" style="width:75%; height:auto;">  
 
 Before sharing the data to ArcGIS Online, the fields for the commute vectors were simplified to only a few important fields such as the Route ID, Residence Census Tract, Work Census Tract, Number of Commuters, and the drive and transit times. A map with the related features was uploaded to ArcGIS Online as a web layer.  
-<img src="../images/WebLayer.jpg" alt="Web Layer" style="width:75%; height:auto;">  
+<img src="./images/WebLayer.jpg" alt="Web Layer" style="width:75%; height:auto;">  
 
 
 ### Calculating Theoretical Emissions with Change Bus Fleet
@@ -129,8 +129,8 @@ Before sharing the data to ArcGIS Online, the fields for the commute vectors wer
 A custom script tool was used in ArcGIS Pro to calculate theoretical emissions based on user-specified parameters for proportions of Halifax's bus fleet that might be electric and/or hydrogen-diesel hybrid. The user also is prompted to select a time tolerance from a domain (30, 45 or 60) to determine how many drivers would be within a reasonable transit commute and could thus be counted towards potential savings in emissions. 
 
 The reductions in emissions for the alternative fuels were defined as a ratio of the diesel emissions; they were considered to be 71.5% for diesel-hydrogen based on statements from the Halifax Transit authority [^16] and 80% for electric assuming Halifax continues on their transition to solar power for their bus fleet as proposed in their plan[^17]. This was based on an estimated calculation for emissions by KWh for their mid-transition energy grid [^18] and energy use rates of 2 KWh/km [^19]. This estimate was compared to the specifications of the manufacturer[^20] to verify.  
-![Bus Emissions Script Tool](../images/script_tool.png)  
-![Bus Emissions Script Tool Success](../images/script_tool_success.png)  
+![Bus Emissions Script Tool](./images/script_tool.png)  
+![Bus Emissions Script Tool Success](./images/script_tool_success.png)  
 
 
 # Sources
@@ -170,7 +170,7 @@ The reductions in emissions for the alternative fuels were defined as a ratio of
 ### GTFS Files
 GEMINI AI was prompted to generate GTFS files for the new proposed transit routes that did not have full schedule information posted. GEMINI created a script to make all the required files based on information in a static report from the city of Halifax and the dataset of stops available from their open data portal. The prompt is as follows:
 > I have two bus routes I want to combine into the same network. One is already in GTFS format with stop times, while the other is a proposed route with predicted stop times. I have the shapefile of the locations of the proposed stops. Can you write a Python script to generate a GTFS for the proposed route, using only peak times, no ferries, and interpolating time between stops based on the info provided in the proposal graphic? (graphic with proposed time between major stops uploaded)  
-> <img src="../images/BRT_schedule.jpg" alt="BRT Schedule" style="height:300px;"> <img src="../images/BRT_traveltimes.jpg" alt="BRT Travel Times" style="height:300px;">  
+> <img src="./images/BRT_schedule.jpg" alt="BRT Schedule" style="height:300px;"> <img src="./images/BRT_traveltimes.jpg" alt="BRT Travel Times" style="height:300px;">  
 
 
 ### Custom script tool
