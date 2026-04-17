@@ -1,7 +1,7 @@
 # Team Dubious Undergrad Bikers (DUB)
 ## Bike2Basics
 
-<img src="./images/AppChallengeImages/Bike2Basics_Logo_Final.png" style="height:300px; margin:0 .5em .25em 0; float: left;" /> 
+<img src="./images/Bike2Basics_Logo_Final.png" style="height:300px; margin:0 .5em .25em 0; float: left;" /> 
 
 ## Links 
 - **ArcGIS Hub site:** https://bike-to-basics-uwaterloo.hub.arcgis.com/
