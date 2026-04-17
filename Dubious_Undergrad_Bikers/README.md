@@ -1,7 +1,7 @@
 # Team Dubious Undergrad Bikers (DUB)
 ## Bike2Basics
 
-<img src="AppChallengeImages/Bike2Basics_Logo_Final.png" style="height:300px; margin:0 .5em .25em 0; float: left;" /> 
+<img src="./images/AppChallengeImages/Bike2Basics_Logo_Final.png" style="height:300px; margin:0 .5em .25em 0; float: left;" /> 
 
 ## Links 
 - **ArcGIS Hub site:** https://bike-to-basics-uwaterloo.hub.arcgis.com/
@@ -20,7 +20,7 @@ I am a fourth-year student at the University of Waterloo majoring in Geography a
 **Julianne Ho:**
 I am a third-year undergraduate student at UW in the Geography and Environmental Management program specializing in Geomatics and minoring in Urban Studies, though I was first brought into spatial sciences because of a love for ecology. I have always been interested in how organisms move and interact with their environment, and that extends to people! My most recent interests lie in applying GIS to reduce bird collisions on campus, contribute to federal Species at Risk recovery and land conservation, as well as studying severe weather impacts on people and ecosystems. In my free time, I like to dillydally with birding, geocaching and kendo.
 
-<img src="./images/mohan.jpeg" style="height:300px; margin:0 .5em .25em 0; float: left;" /> 
+<img src="./images/mohan.jpg" style="height:300px; margin:0 .5em .25em 0; float: left;" /> 
 
 **Mohan Mahbaz:**
 I’m a first-year student at University of Waterloo majoring in Geomatics. I’m interested in how maps and spatial data can solve real world problems, especially how location connects to socioeconomic factors and the economy. I’m an Esri Student Associate, and I’m continuing to build practical GIS skills through this App Challenge. Outside of school, I’m a 4th Dan Taekwondo black belt, and I play piano and clarinet.
