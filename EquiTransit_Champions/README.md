@@ -103,8 +103,8 @@ When a neighbourhood is selected, the dashboard simultaneously displays:
 - Total population of the selected area
 
 ![Page1Stats](./images/page1stats.JPG)
-
--This enables quick comparison of transportation modes and healthcare access.
+ 
+- This enables quick comparison of transportation modes and healthcare access.
 
 ---
 
