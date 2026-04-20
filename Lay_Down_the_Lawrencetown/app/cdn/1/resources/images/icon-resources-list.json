@@ -1,0 +1,102 @@
+{
+  "1771784826330.jpg": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771784826330.jpg",
+    "properties": {
+      "filename": "1771784826330.jpg",
+      "originalName": "walk.jpg",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771784826330.jpg",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771784851381.jpg": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771784851381.jpg",
+    "properties": {
+      "filename": "1771784851381.jpg",
+      "originalName": "bike.jpg",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771784851381.jpg",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771796337598.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771796337598.png",
+    "properties": {
+      "filename": "1771796337598.png",
+      "originalName": "bike2.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771796337598.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771796344532.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771796344532.png",
+    "properties": {
+      "filename": "1771796344532.png",
+      "originalName": "walk3.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771796344532.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771803487142.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771803487142.png",
+    "properties": {
+      "filename": "1771803487142.png",
+      "originalName": "Questiontransparent.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771803487142.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771968520114.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771968520114.png",
+    "properties": {
+      "filename": "1771968520114.png",
+      "originalName": "family.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771968520114.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771978804512.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771978804512.png",
+    "properties": {
+      "filename": "1771978804512.png",
+      "originalName": "info4.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771978804512.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771978863730.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771978863730.png",
+    "properties": {
+      "filename": "1771978863730.png",
+      "originalName": "info5.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771978863730.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771999716956.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771999716956.png",
+    "properties": {
+      "filename": "1771999716956.png",
+      "originalName": "ind3.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771999716956.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  },
+  "1771999855063.png": {
+    "svg": "${appResourceUrl}/images/icon_picker_in_setting/1771999855063.png",
+    "properties": {
+      "filename": "1771999855063.png",
+      "originalName": "ind5.png",
+      "path": "${appResourceUrl}/images/icon_picker_in_setting/1771999855063.png",
+      "isUploaded": true,
+      "inlineSvg": false
+    }
+  }
+}
