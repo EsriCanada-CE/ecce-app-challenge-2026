@@ -1,11 +1,11 @@
 import type { ThemeComponentStyleOptions } from 'jimu-theme'
 
 export const CssBaseline: ThemeComponentStyleOptions['CssBaseline'] = {
-  root: () => ({
-    html: {
+  root: ({ styleState, theme}) => {
+    return {
       .jimu-alert-severity-warning {
-  visibility: hidden !important; 
-  display: none !important;}
+      visibility: hidden !important,
+      display: none !important,}
     }
-  })
+  }
 }
